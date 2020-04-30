@@ -46,6 +46,7 @@ class AccountProcessor(utils_views.ArgumentProcessor):
 
 
 class LoginRequiredProcessor(utils_views.BaseViewProcessor):
+    ARG_ERROR_MESSAGE = utils_views.ProcessorArgument(default='У Вас нет прав для проведения данной операции')
 
     def login_page_url(self, target_url):
         return logic.login_page_url(target_url)
@@ -55,7 +56,7 @@ class LoginRequiredProcessor(utils_views.BaseViewProcessor):
             return
 
         if context.django_request.is_ajax():
-            raise utils_views.ViewError(code='common.login_required', message='У Вас нет прав для проведения данной операции')
+            raise utils_views.ViewError(code='common.login_required', message=self.error_message)
 
         return utils_views.Redirect(target_url=self.login_page_url(context.django_request.get_full_path()))
 

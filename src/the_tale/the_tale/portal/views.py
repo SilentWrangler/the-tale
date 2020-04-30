@@ -95,6 +95,19 @@ def chat(context):
                             content={'resource': context.resource})
 
 
+@accounts_views.LoginRequiredProcessor(error_message='Вы должны войти в игру, чтобы связать свой аккаунт с аккаунтом Discord')
+@resource('chat-bind-discord')
+def chat_bind_discord(context):
+
+    bind_code = tt_services.discord.cmd_get_bind_code(account_id=context.account.id,
+                                                      expire_timeout=conf.settings.DISCORD_BIND_CODE_EXPIRE_TIMEOUT)
+
+    return utils_views.Page('portal/bind_discord_dialog.html',
+                            content={'resource': context.resource,
+                                     'bind_code': bind_code,
+                                     'expire_timeout': conf.settings.DISCORD_BIND_CODE_EXPIRE_TIMEOUT})
+
+
 @resource('csrf')
 def handlerCSRF(context):
     raise utils_views.ViewError(code='common.csrf',

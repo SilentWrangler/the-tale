@@ -1,14 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Поиск | {{settings.PAGE_TITLE}}{% endblock %}
-{% block description %}Поиск на сайте.{% endblock %}
+{% block title %}Чат | {{settings.PAGE_TITLE}}{% endblock %}
+{% block description %}Общий чат игроков Сказки в Discord.{% endblock %}
 
 {% block content %}
 
 <div class="row">
   <div class="span12">
-    <div class="easy-block">
-      <h3 style="margin-left: 13px;">Чат<h3>
+    <div class="easy-block" style="overflow: auto;">
+      <h2 style="margin-left: 13px;">Чат в Discord</h2>
+
+      <div style="width: 300px; display: inline-block;" class="pull-right">
+        <iframe src="{{settings.DISCORD_WIDGET_URL}}&theme=light"
+                height="500"
+                allowtransparency="true"
+                frameborder="0"></iframe>
+      </div>
+
+      <div>
+        <p>
+          Чат нашей игры находится на сервере <a href="https://discordapp.com/">Discord</a> — самого известного (и удобного) сервиса для организации общения в играх.
+        </p>
+
+        <p>
+          Вы можете <strong><a href="{{settings.DISCORD_INVITE_LINK}}">зайти на сервер</a></strong>, даже если не зарегистрированы в игре. При этом вы сможете полноценно общаться, но вам не будут доступны дополнительные функции.
+        </p>
+
+        <p>
+          Если вы зарегистрированы в игре, вы можете <strong><a class="pgf-dialog-simple" href="{{url('portal:chat-bind-discord')}}">связать игровой аккаунт с аккаунтом в Discord</a></strong>. После этого вам станут доступны дополнительные функции:
+        </p>
+
+        <ol>
+          <li>Ваш ник в чате всегда будет соответствовать нику из игры (только на нашем сервере).</li>
+          <li>Ваш ник в чате будет выделен цветом, чтобы другие игроки знали, что вы — это вы.</li>
+        </ol>
+
+      </div>
+
+
     </div>
   </div>
 </div>

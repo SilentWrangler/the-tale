@@ -110,6 +110,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/emails'
 
 ################################
+# Discord settings
+################################
+
+DISCORD_WIDGET_URL = None
+DISCORD_INVITE_LINK = None
+DISCORD_BIND_COMMAND = 'tt_bind'
+
+################################
 # Other settings
 ################################
 

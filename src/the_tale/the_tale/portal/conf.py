@@ -5,6 +5,8 @@ smart_imports.all()
 
 
 SITE_SECTIONS = ((re.compile(r'^/$'), 'index'),
+                 (re.compile(r'^/search.*$'), 'search'),
+                 (re.compile(r'^/chat.*$'), 'chat'),
                  (re.compile(r'^/news.*$'), 'news'),
                  (re.compile(r'^/forum.*$'), 'forum'),
                  (re.compile(r'^/chat.*$'), 'chat'),

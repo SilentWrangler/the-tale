@@ -89,6 +89,12 @@ def search(context):
                             content={'resource': context.resource})
 
 
+@resource('chat')
+def chat(context):
+    return utils_views.Page('portal/chat.html',
+                            content={'resource': context.resource})
+
+
 @resource('csrf')
 def handlerCSRF(context):
     raise utils_views.ViewError(code='common.csrf',

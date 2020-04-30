@@ -2,5 +2,28 @@ syntax = "proto3";
 package discord;
 
 
+message UserInfo {
+  uint64 id = 1;
+  string nickname = 2;
+}
+
+
+message BindCode {
+  string code = 1;
+  double created_at = 2;
+  double expire_at = 3;
+}
+
+
+message GetBindCodeRequest {
+  UserInfo user = 1;
+}
+
+
+message GetBindCodeResponse {
+  BindCode code = 1;
+}
+
+
 message DebugClearServiceRequest {}
 message DebugClearServiceResponse {}

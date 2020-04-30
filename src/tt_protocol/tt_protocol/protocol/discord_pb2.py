@@ -19,11 +19,111 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='discord.proto',
   package='discord',
   syntax='proto3',
-  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
+  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"-\n\x08UserInfo\x12\x0f\n\x07user_id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\"5\n\x12GetBindCodeRequest\x12\x1f\n\x04user\x18\x01 \x01(\x0b\x32\x11.discord.UserInfo\"#\n\x13GetBindCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
+
+
+_USERINFO = _descriptor.Descriptor(
+  name='UserInfo',
+  full_name='discord.UserInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user_id', full_name='discord.UserInfo.user_id', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='nickname', full_name='discord.UserInfo.nickname', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=26,
+  serialized_end=71,
+)
+
+
+_GETBINDCODEREQUEST = _descriptor.Descriptor(
+  name='GetBindCodeRequest',
+  full_name='discord.GetBindCodeRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user', full_name='discord.GetBindCodeRequest.user', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=73,
+  serialized_end=126,
+)
+
+
+_GETBINDCODERESPONSE = _descriptor.Descriptor(
+  name='GetBindCodeResponse',
+  full_name='discord.GetBindCodeResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='code', full_name='discord.GetBindCodeResponse.code', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=128,
+  serialized_end=163,
+)
 
 
 _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
@@ -45,8 +145,8 @@ _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=26,
-  serialized_end=52,
+  serialized_start=165,
+  serialized_end=191,
 )
 
 
@@ -69,12 +169,37 @@ _DEBUGCLEARSERVICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=54,
-  serialized_end=81,
+  serialized_start=193,
+  serialized_end=220,
 )
 
+_GETBINDCODEREQUEST.fields_by_name['user'].message_type = _USERINFO
+DESCRIPTOR.message_types_by_name['UserInfo'] = _USERINFO
+DESCRIPTOR.message_types_by_name['GetBindCodeRequest'] = _GETBINDCODEREQUEST
+DESCRIPTOR.message_types_by_name['GetBindCodeResponse'] = _GETBINDCODERESPONSE
 DESCRIPTOR.message_types_by_name['DebugClearServiceRequest'] = _DEBUGCLEARSERVICEREQUEST
 DESCRIPTOR.message_types_by_name['DebugClearServiceResponse'] = _DEBUGCLEARSERVICERESPONSE
+
+UserInfo = _reflection.GeneratedProtocolMessageType('UserInfo', (_message.Message,), dict(
+  DESCRIPTOR = _USERINFO,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.UserInfo)
+  ))
+_sym_db.RegisterMessage(UserInfo)
+
+GetBindCodeRequest = _reflection.GeneratedProtocolMessageType('GetBindCodeRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETBINDCODEREQUEST,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.GetBindCodeRequest)
+  ))
+_sym_db.RegisterMessage(GetBindCodeRequest)
+
+GetBindCodeResponse = _reflection.GeneratedProtocolMessageType('GetBindCodeResponse', (_message.Message,), dict(
+  DESCRIPTOR = _GETBINDCODERESPONSE,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.GetBindCodeResponse)
+  ))
+_sym_db.RegisterMessage(GetBindCodeResponse)
 
 DebugClearServiceRequest = _reflection.GeneratedProtocolMessageType('DebugClearServiceRequest', (_message.Message,), dict(
   DESCRIPTOR = _DEBUGCLEARSERVICEREQUEST,

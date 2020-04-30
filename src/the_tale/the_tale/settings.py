@@ -201,7 +201,6 @@ INSTALLED_APPS = [
     'the_tale.guide',
 
     'the_tale.portal',
-    'the_tale.portal.developers_info',
 
     'the_tale.game.chronicle',  # MUST be before game, since the same bug like with the_tale.accounts.third_party
     'the_tale.game',

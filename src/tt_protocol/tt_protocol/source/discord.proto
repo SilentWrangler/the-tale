@@ -2,7 +2,7 @@ syntax = "proto3";
 package discord;
 
 
-message UserInfo {
+message User {
   uint64 id = 1;
   string nickname = 2;
 }
@@ -16,7 +16,8 @@ message BindCode {
 
 
 message GetBindCodeRequest {
-  UserInfo user = 1;
+  User user = 1;
+  double expire_timeout = 2;
 }
 
 

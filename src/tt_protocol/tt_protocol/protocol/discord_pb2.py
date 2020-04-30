@@ -19,29 +19,29 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='discord.proto',
   package='discord',
   syntax='proto3',
-  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"-\n\x08UserInfo\x12\x0f\n\x07user_id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\"5\n\x12GetBindCodeRequest\x12\x1f\n\x04user\x18\x01 \x01(\x0b\x32\x11.discord.UserInfo\"#\n\x13GetBindCodeResponse\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
+  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"$\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\"?\n\x08\x42indCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\x01\x12\x11\n\texpire_at\x18\x03 \x01(\x01\"I\n\x12GetBindCodeRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\x16\n\x0e\x65xpire_timeout\x18\x02 \x01(\x01\"6\n\x13GetBindCodeResponse\x12\x1f\n\x04\x63ode\x18\x01 \x01(\x0b\x32\x11.discord.BindCode\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
-_USERINFO = _descriptor.Descriptor(
-  name='UserInfo',
-  full_name='discord.UserInfo',
+_USER = _descriptor.Descriptor(
+  name='User',
+  full_name='discord.User',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='user_id', full_name='discord.UserInfo.user_id', index=0,
+      name='id', full_name='discord.User.id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='nickname', full_name='discord.UserInfo.nickname', index=1,
+      name='nickname', full_name='discord.User.nickname', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -60,7 +60,52 @@ _USERINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=71,
+  serialized_end=62,
+)
+
+
+_BINDCODE = _descriptor.Descriptor(
+  name='BindCode',
+  full_name='discord.BindCode',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='code', full_name='discord.BindCode.code', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='created_at', full_name='discord.BindCode.created_at', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='expire_at', full_name='discord.BindCode.expire_at', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=64,
+  serialized_end=127,
 )
 
 
@@ -78,34 +123,10 @@ _GETBINDCODEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=73,
-  serialized_end=126,
-)
-
-
-_GETBINDCODERESPONSE = _descriptor.Descriptor(
-  name='GetBindCodeResponse',
-  full_name='discord.GetBindCodeResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='code', full_name='discord.GetBindCodeResponse.code', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='expire_timeout', full_name='discord.GetBindCodeRequest.expire_timeout', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -121,8 +142,39 @@ _GETBINDCODERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=128,
-  serialized_end=163,
+  serialized_start=129,
+  serialized_end=202,
+)
+
+
+_GETBINDCODERESPONSE = _descriptor.Descriptor(
+  name='GetBindCodeResponse',
+  full_name='discord.GetBindCodeResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='code', full_name='discord.GetBindCodeResponse.code', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=204,
+  serialized_end=258,
 )
 
 
@@ -145,8 +197,8 @@ _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=165,
-  serialized_end=191,
+  serialized_start=260,
+  serialized_end=286,
 )
 
 
@@ -169,23 +221,32 @@ _DEBUGCLEARSERVICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=193,
-  serialized_end=220,
+  serialized_start=288,
+  serialized_end=315,
 )
 
-_GETBINDCODEREQUEST.fields_by_name['user'].message_type = _USERINFO
-DESCRIPTOR.message_types_by_name['UserInfo'] = _USERINFO
+_GETBINDCODEREQUEST.fields_by_name['user'].message_type = _USER
+_GETBINDCODERESPONSE.fields_by_name['code'].message_type = _BINDCODE
+DESCRIPTOR.message_types_by_name['User'] = _USER
+DESCRIPTOR.message_types_by_name['BindCode'] = _BINDCODE
 DESCRIPTOR.message_types_by_name['GetBindCodeRequest'] = _GETBINDCODEREQUEST
 DESCRIPTOR.message_types_by_name['GetBindCodeResponse'] = _GETBINDCODERESPONSE
 DESCRIPTOR.message_types_by_name['DebugClearServiceRequest'] = _DEBUGCLEARSERVICEREQUEST
 DESCRIPTOR.message_types_by_name['DebugClearServiceResponse'] = _DEBUGCLEARSERVICERESPONSE
 
-UserInfo = _reflection.GeneratedProtocolMessageType('UserInfo', (_message.Message,), dict(
-  DESCRIPTOR = _USERINFO,
+User = _reflection.GeneratedProtocolMessageType('User', (_message.Message,), dict(
+  DESCRIPTOR = _USER,
   __module__ = 'discord_pb2'
-  # @@protoc_insertion_point(class_scope:discord.UserInfo)
+  # @@protoc_insertion_point(class_scope:discord.User)
   ))
-_sym_db.RegisterMessage(UserInfo)
+_sym_db.RegisterMessage(User)
+
+BindCode = _reflection.GeneratedProtocolMessageType('BindCode', (_message.Message,), dict(
+  DESCRIPTOR = _BINDCODE,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.BindCode)
+  ))
+_sym_db.RegisterMessage(BindCode)
 
 GetBindCodeRequest = _reflection.GeneratedProtocolMessageType('GetBindCodeRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETBINDCODEREQUEST,

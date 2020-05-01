@@ -22,10 +22,10 @@ def get_config():
 
 
 async def create_accounts(game_ids):
-    accounts_ids = []
+    accounts_infos = []
 
     for game_id in (666, 777, 888):
-        account_id = await operations.create_account(game_id=game_id)
-        accounts_ids.append(account_id)
+        account_info = await operations.create_account(game_id=game_id)
+        accounts_infos.append(account_info)
 
-    return accounts_ids
+    return accounts_infos

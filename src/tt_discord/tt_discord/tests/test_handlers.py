@@ -9,6 +9,7 @@ from tt_protocol.protocol import discord_pb2
 from tt_web import postgresql as db
 
 from .. import protobuf
+from .. import relations
 from .. import operations
 
 from . import helpers
@@ -37,18 +38,17 @@ class GetBindCodeTests(helpers.BaseTests):
                                                                              expire_timeout=60).SerializeToString())
         data = await self.check_success(request, discord_pb2.GetBindCodeResponse)
 
-        account_id = await operations.get_account_id(user.id)
+        account_info = await operations.get_account_info_by_game_id(user.id)
 
         result = await db.sql('SELECT * FROM bind_codes WHERE account=%(account_id)s',
-                              {'account_id': account_id})
+                              {'account_id': account_info.id})
 
         self.assertEqual(data.code,
                          protobuf.from_bind_code(operations.row_to_bind_code(result[0])))
 
-        result = await db.sql('SELECT * FROM nicknames WHERE account=%(account_id)s',
-                              {'account_id': account_id})
+        game_data = await operations.get_new_game_data(account_info.id)
 
-        self.assertEqual(result[0]['nickname'], user.nickname)
+        self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], user.nickname)
 
     @test_utils.unittest_run_loop
     async def test_normalize_nick(self):
@@ -58,9 +58,9 @@ class GetBindCodeTests(helpers.BaseTests):
         await self.client.post('/get-bind-code',
                                data=discord_pb2.GetBindCodeRequest(user=user,
                                                                    expire_timeout=60).SerializeToString())
-        account_id = await operations.get_account_id(user.id)
 
-        result = await db.sql('SELECT * FROM nicknames WHERE account=%(account_id)s',
-                              {'account_id': account_id})
+        account_info = await operations.get_account_info_by_game_id(user.id)
 
-        self.assertEqual(result[0]['nickname'], 'problem?nick')
+        game_data = await operations.get_new_game_data(account_info.id)
+
+        self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], 'problem?nick')

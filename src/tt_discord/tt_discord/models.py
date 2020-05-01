@@ -22,18 +22,21 @@ class Account(models.Model):
         db_table = 'accounts'
 
 
-class Nick(models.Model):
+class GameData(models.Model):
 
-    account = models.ForeignKey(Account, unique=True, related_name='+', on_delete=models.CASCADE, db_column='account')
+    account = models.ForeignKey(Account, related_name='+', on_delete=models.CASCADE, db_column='account')
 
-    nickname = models.CharField(max_length=conf.DISCORD_NICKNAME_MAX_LENGTH)
+    type = models.IntegerField()
+
+    data = postgres_fields.JSONField(default='{}')
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True, db_index=True)
     synced_at = models.DateTimeField(null=True, db_index=True)
 
     class Meta:
-        db_table = 'nicknames'
+        db_table = 'game_data'
+        unique_together = (('account', 'type'),)
 
 
 class BindCode(models.Model):

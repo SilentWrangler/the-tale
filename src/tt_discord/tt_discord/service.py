@@ -20,6 +20,8 @@ async def start_bot(config):
 
     DISCORD_BOT = bot.Bot(command_prefix=config['command_prefix'])
 
+    bot.construct(DISCORD_BOT, config)
+
     async def runner():
         await DISCORD_BOT.start(config['token'], bot=True, reconnect=True)
 

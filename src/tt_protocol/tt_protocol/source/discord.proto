@@ -27,5 +27,14 @@ message GetBindCodeResponse {
 }
 
 
+message UpdateUserRequest {
+  User user = 1;
+}
+
+
+message UpdateUserResponse {
+}
+
+
 message DebugClearServiceRequest {}
 message DebugClearServiceResponse {}

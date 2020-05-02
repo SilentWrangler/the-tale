@@ -72,7 +72,7 @@ class GetAccountInfoByGameIdTests(helpers.BaseTests):
     async def test_account_exists(self):
         accounts_infos = await helpers.create_accounts(game_ids=(666, 777, 888))
 
-        found_account_info = await operations.get_account_info_by_game_id(game_id=777)
+        found_account_info = await operations.get_account_info_by_game_id(game_id=777, create_if_not_exists=False)
 
         self.assertEqual(found_account_info, accounts_infos[1])
 
@@ -81,16 +81,30 @@ class GetAccountInfoByGameIdTests(helpers.BaseTests):
         self.assertEqual(len(result), 3)
 
     @test_utils.unittest_run_loop
-    async def test_account_does_not_exist(self):
+    async def test_account_does_not_exist__create(self):
         accounts_infos = await helpers.create_accounts(game_ids=(666, 777, 888))
 
-        found_account_info = await operations.get_account_info_by_game_id(game_id=999)
+        found_account_info = await operations.get_account_info_by_game_id(game_id=999, create_if_not_exists=True)
 
         self.assertNotIn(found_account_info, accounts_infos)
 
         result = await db.sql('SELECT * FROM accounts ORDER BY game_id')
 
         self.assertEqual(len(result), 4)
+
+    @test_utils.unittest_run_loop
+    async def test_account_does_not_exist__do_not_create(self):
+        await helpers.create_accounts(game_ids=(666, 777, 888))
+
+        found_account_info = await operations.get_account_info_by_game_id(game_id=999, create_if_not_exists=False)
+
+        self.assertEqual(found_account_info, objects.AccountInfo(id=None,
+                                                                 game_id=999,
+                                                                 discord_id=None))
+
+        result = await db.sql('SELECT * FROM accounts ORDER BY game_id')
+
+        self.assertEqual(len(result), 3)
 
 
 class GetAccountInfoByDiscordIdTests(helpers.BaseTests):

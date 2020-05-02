@@ -26,10 +26,10 @@ async def create_account(game_id):
     if result:
         return row_to_account_info(result[0])
 
-    return await get_account_info_by_game_id(game_id)
+    return await get_account_info_by_game_id(game_id, create_if_not_exists=True)
 
 
-async def get_account_info_by_game_id(game_id):
+async def get_account_info_by_game_id(game_id, create_if_not_exists):
 
     result = await db.sql('SELECT * FROM accounts WHERE game_id=%(game_id)s',
                           {'game_id': game_id})
@@ -37,7 +37,12 @@ async def get_account_info_by_game_id(game_id):
     if result:
         return row_to_account_info(result[0])
 
-    return await create_account(game_id)
+    if create_if_not_exists:
+        return await create_account(game_id)
+
+    return objects.AccountInfo(id=None,
+                               game_id=game_id,
+                               discord_id=None)
 
 
 async def get_account_info_by_discord_id(discord_id):

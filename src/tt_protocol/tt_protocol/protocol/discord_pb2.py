@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='discord.proto',
   package='discord',
   syntax='proto3',
-  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"3\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\x12\r\n\x05roles\x18\x03 \x03(\t\"?\n\x08\x42indCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\x01\x12\x11\n\texpire_at\x18\x03 \x01(\x01\"I\n\x12GetBindCodeRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\x16\n\x0e\x65xpire_timeout\x18\x02 \x01(\x01\"6\n\x13GetBindCodeResponse\x12\x1f\n\x04\x63ode\x18\x01 \x01(\x0b\x32\x11.discord.BindCode\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
+  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"3\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\x12\r\n\x05roles\x18\x03 \x03(\t\"?\n\x08\x42indCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\x01\x12\x11\n\texpire_at\x18\x03 \x01(\x01\"I\n\x12GetBindCodeRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\x16\n\x0e\x65xpire_timeout\x18\x02 \x01(\x01\"6\n\x13GetBindCodeResponse\x12\x1f\n\x04\x63ode\x18\x01 \x01(\x0b\x32\x11.discord.BindCode\"0\n\x11UpdateUserRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\"\x14\n\x12UpdateUserResponse\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -185,6 +185,61 @@ _GETBINDCODERESPONSE = _descriptor.Descriptor(
 )
 
 
+_UPDATEUSERREQUEST = _descriptor.Descriptor(
+  name='UpdateUserRequest',
+  full_name='discord.UpdateUserRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='user', full_name='discord.UpdateUserRequest.user', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=275,
+  serialized_end=323,
+)
+
+
+_UPDATEUSERRESPONSE = _descriptor.Descriptor(
+  name='UpdateUserResponse',
+  full_name='discord.UpdateUserResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=325,
+  serialized_end=345,
+)
+
+
 _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
   name='DebugClearServiceRequest',
   full_name='discord.DebugClearServiceRequest',
@@ -204,8 +259,8 @@ _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=275,
-  serialized_end=301,
+  serialized_start=347,
+  serialized_end=373,
 )
 
 
@@ -228,16 +283,19 @@ _DEBUGCLEARSERVICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=303,
-  serialized_end=330,
+  serialized_start=375,
+  serialized_end=402,
 )
 
 _GETBINDCODEREQUEST.fields_by_name['user'].message_type = _USER
 _GETBINDCODERESPONSE.fields_by_name['code'].message_type = _BINDCODE
+_UPDATEUSERREQUEST.fields_by_name['user'].message_type = _USER
 DESCRIPTOR.message_types_by_name['User'] = _USER
 DESCRIPTOR.message_types_by_name['BindCode'] = _BINDCODE
 DESCRIPTOR.message_types_by_name['GetBindCodeRequest'] = _GETBINDCODEREQUEST
 DESCRIPTOR.message_types_by_name['GetBindCodeResponse'] = _GETBINDCODERESPONSE
+DESCRIPTOR.message_types_by_name['UpdateUserRequest'] = _UPDATEUSERREQUEST
+DESCRIPTOR.message_types_by_name['UpdateUserResponse'] = _UPDATEUSERRESPONSE
 DESCRIPTOR.message_types_by_name['DebugClearServiceRequest'] = _DEBUGCLEARSERVICEREQUEST
 DESCRIPTOR.message_types_by_name['DebugClearServiceResponse'] = _DEBUGCLEARSERVICERESPONSE
 
@@ -268,6 +326,20 @@ GetBindCodeResponse = _reflection.GeneratedProtocolMessageType('GetBindCodeRespo
   # @@protoc_insertion_point(class_scope:discord.GetBindCodeResponse)
   ))
 _sym_db.RegisterMessage(GetBindCodeResponse)
+
+UpdateUserRequest = _reflection.GeneratedProtocolMessageType('UpdateUserRequest', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEUSERREQUEST,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.UpdateUserRequest)
+  ))
+_sym_db.RegisterMessage(UpdateUserRequest)
+
+UpdateUserResponse = _reflection.GeneratedProtocolMessageType('UpdateUserResponse', (_message.Message,), dict(
+  DESCRIPTOR = _UPDATEUSERRESPONSE,
+  __module__ = 'discord_pb2'
+  # @@protoc_insertion_point(class_scope:discord.UpdateUserResponse)
+  ))
+_sym_db.RegisterMessage(UpdateUserResponse)
 
 DebugClearServiceRequest = _reflection.GeneratedProtocolMessageType('DebugClearServiceRequest', (_message.Message,), dict(
   DESCRIPTOR = _DEBUGCLEARSERVICEREQUEST,

@@ -59,6 +59,7 @@ def register_routers(app):
     from . import handlers
 
     app.router.add_post('/get-bind-code', handlers.get_bind_code)
+    app.router.add_post('/update-user', handlers.update_user)
 
     app.router.add_post('/debug-clear-service', handlers.debug_clear_service)
 

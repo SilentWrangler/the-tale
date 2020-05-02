@@ -26,15 +26,16 @@ class GameData(models.Model):
 
     type = models.IntegerField()
 
-    data = postgres_fields.JSONField(default='{}')
+    data = postgres_fields.JSONField(default=dict)
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
     synced_at = models.DateTimeField(null=True, db_index=True)
 
     class Meta:
         db_table = 'game_data'
         unique_together = (('account', 'type'),)
+        index_together = (('updated_at', 'synced_at'),)
 
 
 class BindCode(models.Model):
@@ -43,7 +44,7 @@ class BindCode(models.Model):
 
     code = models.UUIDField(unique=True)
 
-    account = models.ForeignKey(Account, unique=True, related_name='+', on_delete=models.CASCADE, db_column='account')
+    account = models.OneToOneField(Account, related_name='+', on_delete=models.CASCADE, db_column='account')
 
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     expire_at = models.DateTimeField(db_index=True)

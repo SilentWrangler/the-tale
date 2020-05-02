@@ -31,8 +31,9 @@ class Client(client.Client):
 
         return self.protobuf_to_bind_code(answer.code)
 
-    def cmd_update_user(self, user):
-        request = tt_protocol_discord_pb2.UpdateUserRequest(user=user)
+    def cmd_update_user(self, user, force=False):
+        request = tt_protocol_discord_pb2.UpdateUserRequest(user=user,
+                                                            force=force)
 
         operations.sync_request(url=self.url('update-user'),
                                 data=request,

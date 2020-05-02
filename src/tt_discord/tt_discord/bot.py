@@ -4,6 +4,9 @@ import logging
 
 from discord.ext import commands as discord_commands
 
+from tt_web.common import event
+
+from . import conf
 from . import relations
 from . import operations
 
@@ -76,34 +79,39 @@ def construct(config):
         if not result.is_success():
             return
 
-        account_info = await operations.get_account_info_by_discord_id(context.author.id)
-
-        await synchronize(bot, account_info, config)
+        event.get(conf.SYNC_EVENT_NAME).set()
 
     return bot
 
 
-async def synchronize(bot, account_info, config):
+async def sync_change(change, bot, config):
+
+    account_info = await operations.get_account_info_by_id(change['account_id'])
 
     if not account_info.is_binded():
         NotImplementedError('game account not bind to discord')
 
-    data, update_times = await operations.get_new_game_data(account_info.id)
+    if change['type'] is relations.GAME_DATA_TYPE.NICKNAME:
+        await sync_nickname(bot, account_info, change['data'])
 
-    for data_type, value in data.items():
-        if data_type is relations.GAME_DATA_TYPE.NICKNAME:
-            await sync_nickname(bot, account_info, value, sync_time=update_times[data_type])
+    elif change['type'] is relations.GAME_DATA_TYPE.ROLES:
+        await sync_roles(bot, account_info, change['data'], config=config)
 
-        if data_type is relations.GAME_DATA_TYPE.ROLES:
-            await sync_roles(bot, account_info, value, sync_time=update_times[data_type], config=config)
+    await operations.mark_game_data_synced(account_info.id,
+                                           type=change['type'],
+                                           synced_at=change['updated_at'])
 
 
-async def sync_nickname(bot, account_info, data, sync_time):
+async def sync_nickname(bot, account_info, data):
 
     nickname = data['nickname']
 
     for guild in bot.guilds:
         member = guild.get_member(account_info.discord_id)
+
+        if member is None:
+            logging.info('discord user %s not found in guild %s', account_info.discord_id, guild.id)
+            continue
 
         if guild.owner.id == member.id:
             await member.send('Я не могу изменить ваш ник, так как вы являетесь владельцем сервера.')
@@ -112,21 +120,17 @@ async def sync_nickname(bot, account_info, data, sync_time):
         await member.edit(nick=nickname, reason='Синхронизация с ником в игре.')
         await member.send('Я изменил ваш ник, чтобы он соответствовал нику в игре.')
 
-    await operations.mark_game_data_synced(account_info.id,
-                                           type=relations.GAME_DATA_TYPE.NICKNAME,
-                                           synced_at=sync_time)
 
-
-async def sync_roles(bot, account_info, data, sync_time, config):
+async def sync_roles(bot, account_info, data, config):
 
     roles = data['roles']
 
     for guild in bot.guilds:
         member = guild.get_member(account_info.discord_id)
 
-        # if guild.owner.id == member.id:
-        #     await member.send('Я не могу изменить ваши роли, так как вы являетесь владельцем сервера.')
-        #     continue
+        if member is None:
+            logging.info('discord user %s not found in guild %s', account_info.discord_id, guild.id)
+            continue
 
         discord_roles = []
 
@@ -139,7 +143,3 @@ async def sync_roles(bot, account_info, data, sync_time, config):
 
         await member.edit(roles=discord_roles, reason='Синхронизация с ролями в игре.')
         await member.send('Я изменил ваши роли, чтобы они соответствовали вашему статусу в игре.')
-
-    await operations.mark_game_data_synced(account_info.id,
-                                           type=relations.GAME_DATA_TYPE.NICKNAME,
-                                           synced_at=sync_time)

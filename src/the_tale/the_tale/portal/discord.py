@@ -13,7 +13,7 @@ class DISCORD_ROLE(rels_django.DjangoEnum):
                ('SPIRIT_OF_PANDORA', 5, 'Дух Пандоры'))
 
 
-def construc_user_info(account):
+def construct_user_info(account):
 
     ##########
     # nickname

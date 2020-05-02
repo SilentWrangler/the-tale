@@ -6,17 +6,22 @@ from aiohttp import web
 
 from tt_web import log
 from tt_web import postgresql
+from tt_web.common import event
 
 from . import bot
+from . import conf
+from . import logic
 
 
 DISCORD_BOT = None
 DISCORD_BOT_TASK = None
+DISCORD_SYNC_USERS_TASK = None
 
 
 async def start_bot(config):
     global DISCORD_BOT
     global DISCORD_BOT_TASK
+    global DISCORD_SYNC_USERS_TASK
 
     DISCORD_BOT = bot.construct(config)
 
@@ -25,10 +30,23 @@ async def start_bot(config):
 
     DISCORD_BOT_TASK = asyncio.ensure_future(runner())
 
+    async def update_users():
+        event.get(conf.SYNC_EVENT_NAME).set()
+
+        while True:
+            try:
+                await logic.sync_users(DISCORD_BOT, config)
+            except Exception:
+                logging.exception('error in user synchonisation task, sleep and continue')
+                await asyncio.sleep(config['sleep_on_sync_users_error'])
+
+    DISCORD_SYNC_USERS_TASK = asyncio.ensure_future(update_users())
+
 
 async def stop_bot():
     global DISCORD_BOT
     global DISCORD_BOT_TASK
+    global DISCORD_SYNC_USERS_TASK
 
     if DISCORD_BOT is None:
         return
@@ -37,6 +55,11 @@ async def stop_bot():
 
     DISCORD_BOT = None
     DISCORD_BOT_TASK = None
+
+    if DISCORD_SYNC_USERS_TASK:
+        DISCORD_SYNC_USERS_TASK.cancel()
+
+    DISCORD_SYNC_USERS_TASK = None
 
 
 async def on_startup(app):

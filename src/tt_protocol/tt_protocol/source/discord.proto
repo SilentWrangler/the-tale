@@ -29,6 +29,7 @@ message GetBindCodeResponse {
 
 message UpdateUserRequest {
   User user = 1;
+  bool force = 2;
 }
 
 

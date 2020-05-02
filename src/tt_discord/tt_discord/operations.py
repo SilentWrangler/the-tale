@@ -4,7 +4,9 @@ import uuid
 from psycopg2.extras import Json as PGJson
 
 from tt_web import postgresql as db
+from tt_web.common import event
 
+from . import conf
 from . import objects
 from . import relations
 
@@ -71,51 +73,72 @@ async def get_account_info_by_id(account_id):
                                discord_id=None)
 
 
-async def _update_game_data(account_id, type, data):
+async def _update_game_data(account_id, type, data, force):
 
     # TODO: rewrite not best solution of comparing json data
 
-    await db.sql('''INSERT INTO game_data (account, type, data, created_at, updated_at, synced_at)
-                    VALUES (%(account_id)s, %(type)s, %(data)s, NOW(), NOW(), NULL)
-                    ON CONFLICT (account, type) DO UPDATE SET data=EXCLUDED.data,
-                                                              updated_at=NOW()
-                                                   WHERE game_data.data<>EXCLUDED.data''',
-                 {'account_id': account_id,
-                  'data': PGJson(data),
-                  'type': type.value})
+    import logging
+    logging.info('update %s', (account_id, type, data, force))
+
+    result = await db.sql('''INSERT INTO game_data (account, type, data, created_at, updated_at, synced_at)
+                             VALUES (%(account_id)s, %(type)s, %(data)s, NOW(), NOW(), NULL)
+                             ON CONFLICT (account, type) DO UPDATE SET data=EXCLUDED.data,
+                                                                       updated_at=NOW()
+                                                                   WHERE %(force)s OR game_data.data<>EXCLUDED.data
+                             RETURNING account''',
+                         {'account_id': account_id,
+                          'data': PGJson(data),
+                          'type': type.value,
+                          'force': force})
+
+    if result:
+        event.get(conf.SYNC_EVENT_NAME).set()
 
 
-async def update_game_data(account_id, nickname=None, roles=None):
+async def update_game_data(account_id, nickname=None, roles=None, force=False):
 
     if nickname is not None:
         await _update_game_data(account_id,
                                 type=relations.GAME_DATA_TYPE.NICKNAME,
-                                data={'nickname': nickname})
+                                data={'nickname': nickname},
+                                force=force)
 
     if roles is not None:
         await _update_game_data(account_id,
                                 type=relations.GAME_DATA_TYPE.ROLES,
-                                data={'roles': sorted(roles)})
+                                data={'roles': sorted(roles)},
+                                force=force)
+
+
+def row_to_changes(row):
+    return {'account_id': row['account'],
+            'type': relations.GAME_DATA_TYPE(row['type']),
+            'data': row['data'],
+            'updated_at': row['updated_at']}
 
 
 async def get_new_game_data(account_id):
 
-    result = await db.sql('''SELECT type, data, updated_at FROM game_data
+    result = await db.sql('''SELECT account, type, data, updated_at FROM game_data
                              WHERE account=%(account_id)s AND
                                    (synced_at IS NULL OR synced_at < updated_at)''',
                           {'account_id': account_id})
 
-    data = {}
-    update_times = {}
+    return [row_to_changes(row) for row in result]
 
-    for row in result:
-        data[relations.GAME_DATA_TYPE(row['type'])] = row['data']
-        update_times[relations.GAME_DATA_TYPE(row['type'])] = row['updated_at']
 
-    return data, update_times
+async def get_any_new_game_data(limit):
+
+    result = await db.sql('''SELECT account, type, data, updated_at, synced_at FROM game_data
+                             WHERE (synced_at IS NULL OR synced_at < updated_at)
+                             LIMIT %(limit)s''',
+                          {'limit': limit})
+
+    return [row_to_changes(row) for row in result]
 
 
 async def mark_game_data_synced(account_id, type, synced_at):
+
     await db.sql('UPDATE game_data SET synced_at=%(synced_at)s WHERE account=%(account_id)s AND type=%(type)s',
                  {'synced_at': synced_at,
                   'account_id': account_id,

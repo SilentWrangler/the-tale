@@ -50,9 +50,14 @@ class GetBindCodeTests(helpers.BaseTests):
         self.assertEqual(data.code,
                          protobuf.from_bind_code(operations.row_to_bind_code(result[0])))
 
-        game_data, update_times = await operations.get_new_game_data(account_info.id)
+        changes = await operations.get_new_game_data(account_info.id)
 
-        self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], user.nickname)
+        changes.sort(key=lambda change: change['type'].value)
+
+        self.assertEqual(len(changes), 2)
+
+        self.assertEqual(changes[0]['data'], {'nickname': user.nickname})
+        self.assertEqual(changes[1]['data'], {'roles': ['role_1', 'role_3']})
 
     @test_utils.unittest_run_loop
     async def test_normalize_nick(self):
@@ -65,9 +70,11 @@ class GetBindCodeTests(helpers.BaseTests):
 
         account_info = await operations.get_account_info_by_game_id(user.id, create_if_not_exists=False)
 
-        game_data, update_times = await operations.get_new_game_data(account_info.id)
+        changes = await operations.get_new_game_data(account_info.id)
 
-        self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], 'problem?nick')
+        changes.sort(key=lambda change: change['type'].value)
+
+        self.assertEqual(changes[0]['data'], {'nickname': 'problem?nick'})
 
 
 class UpdateUserTests(helpers.BaseTests):
@@ -85,10 +92,17 @@ class UpdateUserTests(helpers.BaseTests):
 
         account_info = await operations.get_account_info_by_game_id(user.id, create_if_not_exists=False)
 
-        game_data, update_times = await operations.get_new_game_data(account_info.id)
+        changes = await operations.get_new_game_data(account_info.id)
 
-        self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], user.nickname)
-        self.assertEqual(game_data[relations.GAME_DATA_TYPE.ROLES]['roles'], ['role_1', 'role_3'])
+        changes.sort(key=lambda change: change['type'].value)
+
+        self.assertEqual(len(changes), 2)
+
+        self.assertEqual(changes[0]['type'], relations.GAME_DATA_TYPE.NICKNAME)
+        self.assertEqual(changes[0]['data'], {'nickname': user.nickname})
+
+        self.assertEqual(changes[1]['type'], relations.GAME_DATA_TYPE.ROLES)
+        self.assertEqual(changes[1]['data'], {'roles': ['role_1', 'role_3']})
 
     @test_utils.unittest_run_loop
     async def test_success__no_data(self):
@@ -101,6 +115,6 @@ class UpdateUserTests(helpers.BaseTests):
 
         account_info = await operations.get_account_info_by_game_id(user.id, create_if_not_exists=False)
 
-        game_data, update_times = await operations.get_new_game_data(account_info.id)
+        changes = await operations.get_new_game_data(account_info.id)
 
-        self.assertEqual(game_data, {})
+        self.assertEqual(changes, [])

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='discord.proto',
   package='discord',
   syntax='proto3',
-  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"3\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\x12\r\n\x05roles\x18\x03 \x03(\t\"?\n\x08\x42indCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\x01\x12\x11\n\texpire_at\x18\x03 \x01(\x01\"I\n\x12GetBindCodeRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\x16\n\x0e\x65xpire_timeout\x18\x02 \x01(\x01\"6\n\x13GetBindCodeResponse\x12\x1f\n\x04\x63ode\x18\x01 \x01(\x0b\x32\x11.discord.BindCode\"0\n\x11UpdateUserRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\"\x14\n\x12UpdateUserResponse\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
+  serialized_pb=_b('\n\rdiscord.proto\x12\x07\x64iscord\"3\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x10\n\x08nickname\x18\x02 \x01(\t\x12\r\n\x05roles\x18\x03 \x03(\t\"?\n\x08\x42indCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x12\n\ncreated_at\x18\x02 \x01(\x01\x12\x11\n\texpire_at\x18\x03 \x01(\x01\"I\n\x12GetBindCodeRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\x16\n\x0e\x65xpire_timeout\x18\x02 \x01(\x01\"6\n\x13GetBindCodeResponse\x12\x1f\n\x04\x63ode\x18\x01 \x01(\x0b\x32\x11.discord.BindCode\"?\n\x11UpdateUserRequest\x12\x1b\n\x04user\x18\x01 \x01(\x0b\x32\r.discord.User\x12\r\n\x05\x66orce\x18\x02 \x01(\x08\"\x14\n\x12UpdateUserResponse\"\x1a\n\x18\x44\x65\x62ugClearServiceRequest\"\x1b\n\x19\x44\x65\x62ugClearServiceResponseb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -199,6 +199,13 @@ _UPDATEUSERREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='force', full_name='discord.UpdateUserRequest.force', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -212,7 +219,7 @@ _UPDATEUSERREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=275,
-  serialized_end=323,
+  serialized_end=338,
 )
 
 
@@ -235,8 +242,8 @@ _UPDATEUSERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=325,
-  serialized_end=345,
+  serialized_start=340,
+  serialized_end=360,
 )
 
 
@@ -259,8 +266,8 @@ _DEBUGCLEARSERVICEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=347,
-  serialized_end=373,
+  serialized_start=362,
+  serialized_end=388,
 )
 
 
@@ -283,8 +290,8 @@ _DEBUGCLEARSERVICERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=375,
-  serialized_end=402,
+  serialized_start=390,
+  serialized_end=417,
 )
 
 _GETBINDCODEREQUEST.fields_by_name['user'].message_type = _USER

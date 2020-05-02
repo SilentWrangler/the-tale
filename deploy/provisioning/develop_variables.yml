@@ -176,6 +176,8 @@ tt_services:
           connect_to_server: false
           command_prefix: 'tt '
           token: null
+          sync_users_chank_size: 100
+          sleep_on_sync_users_error: 1
           roles:
             developer: 706039951514533918
             moderator: 706039907143122976

@@ -8,7 +8,7 @@ from . import protobuf
 from . import operations
 
 
-async def sync_user(user, create_if_not_exists):
+async def sync_user(user, create_if_not_exists, force=False):
     account_info = await operations.get_account_info_by_game_id(user.id, create_if_not_exists)
 
     if account_info.id is None:
@@ -18,14 +18,17 @@ async def sync_user(user, create_if_not_exists):
 
     await operations.update_game_data(account_info.id,
                                       nickname=nickname,
-                                      roles=list(user.roles))
+                                      roles=list(user.roles),
+                                      force=force)
 
     return account_info
 
 
 @handlers.api(discord_pb2.GetBindCodeRequest)
 async def get_bind_code(message, **kwargs):
-    account_info = await sync_user(message.user, create_if_not_exists=True)
+    account_info = await sync_user(message.user,
+                                   create_if_not_exists=True,
+                                   force=True)
 
     bind_code = await operations.get_bind_code(account_info.id, expire_timeout=message.expire_timeout)
 
@@ -34,7 +37,9 @@ async def get_bind_code(message, **kwargs):
 
 @handlers.api(discord_pb2.UpdateUserRequest)
 async def update_user(message, **kwargs):
-    await sync_user(message.user, create_if_not_exists=False)
+    await sync_user(message.user,
+                    create_if_not_exists=False,
+                    force=message.force)
 
     return discord_pb2.UpdateUserResponse()
 

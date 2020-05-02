@@ -100,7 +100,7 @@ def chat(context):
 @resource('chat-bind-discord')
 def chat_bind_discord(context):
 
-    bind_code = tt_services.discord.cmd_get_bind_code(user=discord.construc_user_info(context.accountp),
+    bind_code = tt_services.discord.cmd_get_bind_code(user=discord.construct_user_info(context.account),
                                                       expire_timeout=conf.settings.DISCORD_BIND_CODE_EXPIRE_TIMEOUT)
 
     return utils_views.Page('portal/bind_discord_dialog.html',

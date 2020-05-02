@@ -25,4 +25,4 @@ class Command(utilities_base.Command):
 
             discord_user = discord.construc_user_info(accounts_prototypes.AccountPrototype(model=account_model))
 
-            tt_services.discord.cmd_update_user(user=discord_user)
+            tt_services.discord.cmd_update_user(user=discord_user, force=True)

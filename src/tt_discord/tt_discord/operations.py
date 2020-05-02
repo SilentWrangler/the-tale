@@ -73,10 +73,13 @@ async def get_account_info_by_id(account_id):
 
 async def _update_game_data(account_id, type, data):
 
+    # TODO: rewrite not best solution of comparing json data
+
     await db.sql('''INSERT INTO game_data (account, type, data, created_at, updated_at, synced_at)
                     VALUES (%(account_id)s, %(type)s, %(data)s, NOW(), NOW(), NULL)
-                    ON CONFLICT (account, type) DO UPDATE SET data=%(data)s,
-                                                              updated_at=NOW()''',
+                    ON CONFLICT (account, type) DO UPDATE SET data=EXCLUDED.data,
+                                                              updated_at=NOW()
+                                                   WHERE game_data.data<>EXCLUDED.data''',
                  {'account_id': account_id,
                   'data': PGJson(data),
                   'type': type.value})
@@ -92,7 +95,7 @@ async def update_game_data(account_id, nickname=None, roles=None):
     if roles is not None:
         await _update_game_data(account_id,
                                 type=relations.GAME_DATA_TYPE.ROLES,
-                                data={'roles': roles})
+                                data={'roles': sorted(roles)})
 
 
 async def get_new_game_data(account_id):

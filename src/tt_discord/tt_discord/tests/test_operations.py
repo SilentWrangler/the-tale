@@ -214,6 +214,27 @@ class UpdateGameDataTests(helpers.BaseTests):
         self.assertLess(result[0]['created_at'], result[0]['updated_at'])
 
     @test_utils.unittest_run_loop
+    async def test_not_changed(self):
+        accounts_infos = await helpers.create_accounts(game_ids=(666, 777, 888))
+
+        await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
+
+        result = await db.sql('UPDATE game_data SET synced_at=NOW() RETURNING synced_at, updated_at')
+
+        old_synced_at = result[0]['synced_at']
+        old_updated_at = result[0]['updated_at']
+
+        await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
+
+        result = await db.sql('SELECT * FROM game_data ORDER BY account')
+
+        self.assertEqual(len(result), 1)
+
+        self.assertEqual(result[0]['data'], {'nickname': 'test nick'})
+        self.assertEqual(result[0]['synced_at'], old_synced_at)
+        self.assertEqual(result[0]['updated_at'], old_updated_at)
+
+    @test_utils.unittest_run_loop
     async def test_multiple_records(self):
         accounts_infos = await helpers.create_accounts(game_ids=(666, 777, 888))
 

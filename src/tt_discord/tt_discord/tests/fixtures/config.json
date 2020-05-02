@@ -14,7 +14,10 @@
         "discord": {
             "connect_to_server": true,
             "command_prefix": "tt_",
-            "token": null
+            "token": null,
+            "roles": {"role_1": "1123",
+                      "role_2": "4545",
+                      "role_3": "234523"}
         }
     }
 }

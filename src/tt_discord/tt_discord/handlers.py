@@ -14,7 +14,9 @@ async def get_bind_code(message, **kwargs):
 
     nickname = logic.normalize_nickname(message.user.nickname)
 
-    await operations.update_game_data(account_info.id, nickname=nickname)
+    await operations.update_game_data(account_info.id,
+                                      nickname=nickname,
+                                      roles=list(message.user.roles))
 
     bind_code = await operations.get_bind_code(account_info.id, expire_timeout=message.expire_timeout)
 

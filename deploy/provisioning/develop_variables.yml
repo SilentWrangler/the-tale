@@ -176,6 +176,13 @@ tt_services:
           connect_to_server: false
           command_prefix: tt
           token: null
+          roles:
+            developer: 706039951514533918
+            moderator: 706039907143122976
+            pillar_of_world: 706039836145877002
+            mighty_keeper: 706039505420812298
+            keeper: 706039067996848160
+            spirit_of_pandora: 706039007427166251
 
 
 tt_RAM: 4096

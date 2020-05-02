@@ -77,12 +77,17 @@ async def _update_game_data(account_id, type, data):
                   'type': type.value})
 
 
-async def update_game_data(account_id, nickname=None):
+async def update_game_data(account_id, nickname=None, roles=None):
 
     if nickname is not None:
         await _update_game_data(account_id,
                                 type=relations.GAME_DATA_TYPE.NICKNAME,
                                 data={'nickname': nickname})
+
+    if roles is not None:
+        await _update_game_data(account_id,
+                                type=relations.GAME_DATA_TYPE.ROLES,
+                                data={'roles': roles})
 
 
 async def get_new_game_data(account_id):

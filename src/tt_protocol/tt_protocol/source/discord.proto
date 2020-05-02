@@ -5,6 +5,7 @@ package discord;
 message User {
   uint64 id = 1;
   string nickname = 2;
+  repeated string roles = 3;
 }
 
 

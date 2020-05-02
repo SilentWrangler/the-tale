@@ -24,3 +24,4 @@ BIND_RESULT_MESSAGES = {BIND_RESULT.CODE_NOT_FOUND: 'Код привязки а�
 
 class GAME_DATA_TYPE(enum.Enum):
     NICKNAME = 1
+    ROLES = 2

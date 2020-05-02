@@ -4,8 +4,6 @@ from django.db import models
 
 from django.contrib.postgres import fields as postgres_fields
 
-from . import conf
-
 
 class Account(models.Model):
 

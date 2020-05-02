@@ -25,4 +25,4 @@ class AccountInfo:
     discord_id: int
 
     def is_binded(self):
-        return None not in (self.account_id, self.game_id, self.discord_id)
+        return None not in (self.id, self.game_id, self.discord_id)

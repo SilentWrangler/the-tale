@@ -46,7 +46,7 @@ class GetBindCodeTests(helpers.BaseTests):
         self.assertEqual(data.code,
                          protobuf.from_bind_code(operations.row_to_bind_code(result[0])))
 
-        game_data = await operations.get_new_game_data(account_info.id)
+        game_data, update_times = await operations.get_new_game_data(account_info.id)
 
         self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], user.nickname)
 
@@ -61,6 +61,6 @@ class GetBindCodeTests(helpers.BaseTests):
 
         account_info = await operations.get_account_info_by_game_id(user.id)
 
-        game_data = await operations.get_new_game_data(account_info.id)
+        game_data, update_times = await operations.get_new_game_data(account_info.id)
 
         self.assertEqual(game_data[relations.GAME_DATA_TYPE.NICKNAME]['nickname'], 'problem?nick')

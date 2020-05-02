@@ -205,8 +205,11 @@ class GetNewGameDataTests(helpers.BaseTests):
     @test_utils.unittest_run_loop
     async def test_no_records(self):
         accounts_infos = await helpers.create_accounts(game_ids=(666,))
-        data = await operations.get_new_game_data(accounts_infos[0].id)
+
+        data, update_times = await operations.get_new_game_data(accounts_infos[0].id)
+
         self.assertEqual(data, {})
+        self.assertEqual(update_times, {})
 
     @test_utils.unittest_run_loop
     async def test_has_new_records(self):
@@ -215,9 +218,14 @@ class GetNewGameDataTests(helpers.BaseTests):
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
         await operations.update_game_data(accounts_infos[2].id, nickname='test nick 2')
 
-        data = await operations.get_new_game_data(accounts_infos[1].id)
+        data, update_times = await operations.get_new_game_data(accounts_infos[1].id)
 
         self.assertEqual(data, {relations.GAME_DATA_TYPE.NICKNAME: {'nickname': 'test nick'}})
+
+        result = await db.sql('SELECT updated_at FROM game_data WHERE account=%(account_id)s',
+                              {'account_id': accounts_infos[1].id})
+
+        self.assertEqual(update_times, {relations.GAME_DATA_TYPE.NICKNAME: result[0]['updated_at']})
 
     @test_utils.unittest_run_loop
     async def test_no_new_records(self):
@@ -226,11 +234,14 @@ class GetNewGameDataTests(helpers.BaseTests):
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
         await operations.update_game_data(accounts_infos[2].id, nickname='test nick 2')
 
-        await operations.mark_game_data_synced(accounts_infos[1].id, synced_at=datetime.datetime.now())
+        await operations.mark_game_data_synced(accounts_infos[1].id,
+                                               type=relations.GAME_DATA_TYPE.NICKNAME,
+                                               synced_at=datetime.datetime.now())
 
-        data = await operations.get_new_game_data(accounts_infos[1].id)
+        data, update_times = await operations.get_new_game_data(accounts_infos[1].id)
 
         self.assertEqual(data, {})
+        self.assertEqual(update_times, {})
 
     @test_utils.unittest_run_loop
     async def test_has_new_records_after_sync(self):
@@ -239,13 +250,20 @@ class GetNewGameDataTests(helpers.BaseTests):
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
         await operations.update_game_data(accounts_infos[2].id, nickname='test nick 2')
 
-        await operations.mark_game_data_synced(accounts_infos[1].id, synced_at=datetime.datetime.now())
+        await operations.mark_game_data_synced(accounts_infos[1].id,
+                                               type=relations.GAME_DATA_TYPE.NICKNAME,
+                                               synced_at=datetime.datetime.now())
 
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick 3')
 
-        data = await operations.get_new_game_data(accounts_infos[1].id)
+        data, update_times = await operations.get_new_game_data(accounts_infos[1].id)
 
         self.assertEqual(data, {relations.GAME_DATA_TYPE.NICKNAME: {'nickname': 'test nick 3'}})
+
+        result = await db.sql('SELECT updated_at FROM game_data WHERE account=%(account_id)s',
+                              {'account_id': accounts_infos[1].id})
+
+        self.assertEqual(update_times, {relations.GAME_DATA_TYPE.NICKNAME: result[0]['updated_at']})
 
 
 class MarkGameDataSyncedTests(helpers.BaseTests):
@@ -257,7 +275,11 @@ class MarkGameDataSyncedTests(helpers.BaseTests):
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
         await operations.update_game_data(accounts_infos[2].id, nickname='test nick 2')
 
-        data = await operations.get_new_game_data(accounts_infos[0].id)
+        await operations.mark_game_data_synced(accounts_infos[0].id,
+                                               type=relations.GAME_DATA_TYPE.NICKNAME,
+                                               synced_at=datetime.datetime.now())
+
+        data, update_times = await operations.get_new_game_data(accounts_infos[0].id)
 
         self.assertEqual(data, {})
 
@@ -267,9 +289,11 @@ class MarkGameDataSyncedTests(helpers.BaseTests):
 
         await operations.update_game_data(accounts_infos[1].id, nickname='test nick')
 
-        await operations.mark_game_data_synced(accounts_infos[1].id, synced_at=datetime.datetime.now())
+        await operations.mark_game_data_synced(accounts_infos[1].id,
+                                               type=relations.GAME_DATA_TYPE.NICKNAME,
+                                               synced_at=datetime.datetime.now())
 
-        data = await operations.get_new_game_data(accounts_infos[1].id)
+        data, update_times = await operations.get_new_game_data(accounts_infos[1].id)
 
         self.assertEqual(data, {})
 

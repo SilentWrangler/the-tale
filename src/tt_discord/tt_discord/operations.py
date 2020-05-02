@@ -87,20 +87,26 @@ async def update_game_data(account_id, nickname=None):
 
 async def get_new_game_data(account_id):
 
-    result = await db.sql('SELECT type, data FROM game_data WHERE account=%(account_id)s AND (synced_at IS NULL OR synced_at < updated_at)',
+    result = await db.sql('''SELECT type, data, updated_at FROM game_data
+                             WHERE account=%(account_id)s AND
+                                   (synced_at IS NULL OR synced_at < updated_at)''',
                           {'account_id': account_id})
 
     data = {}
+    update_times = {}
 
     for row in result:
         data[relations.GAME_DATA_TYPE(row['type'])] = row['data']
+        update_times[relations.GAME_DATA_TYPE(row['type'])] = row['updated_at']
 
-    return data
+    return data, update_times
 
 
-async def mark_game_data_synced(account_id, synced_at):
-    await db.sql('UPDATE game_data SET synced_at=%(synced_at)s',
-                 {'synced_at': synced_at})
+async def mark_game_data_synced(account_id, type, synced_at):
+    await db.sql('UPDATE game_data SET synced_at=%(synced_at)s WHERE account=%(account_id)s AND type=%(type)s',
+                 {'synced_at': synced_at,
+                  'account_id': account_id,
+                  'type': type.value})
 
 
 def row_to_bind_code(row):

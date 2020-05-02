@@ -9,10 +9,10 @@ class BIND_RESULT(enum.Enum):
     SUCCESS_NEW = 4
     SUCCESS_REBIND = 5
 
-    def is_success(self, value):
-        return value in (self.ALREADY_BINDED,
-                         self.SUCCESS_NEW,
-                         self.SUCCESS_REBIND)
+    def is_success(self):
+        return self in (self.ALREADY_BINDED,
+                        self.SUCCESS_NEW,
+                        self.SUCCESS_REBIND)
 
 
 BIND_RESULT_MESSAGES = {BIND_RESULT.CODE_NOT_FOUND: 'Код привязки аккаунта не найден, введён неверно или устарел. Пожалуйста, получите новый код на сайте игры.',

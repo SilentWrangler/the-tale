@@ -174,7 +174,7 @@ tt_services:
     custom:
         discord:
           connect_to_server: false
-          command_prefix: tt
+          command_prefix: 'tt '
           token: null
           roles:
             developer: 706039951514533918

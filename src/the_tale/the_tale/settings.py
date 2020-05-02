@@ -115,7 +115,7 @@ EMAIL_FILE_PATH = '/tmp/emails'
 
 DISCORD_WIDGET_URL = None
 DISCORD_INVITE_LINK = None
-DISCORD_BIND_COMMAND = 'tt_bind'
+DISCORD_BIND_COMMAND = 'tt bind'
 
 ################################
 # Other settings

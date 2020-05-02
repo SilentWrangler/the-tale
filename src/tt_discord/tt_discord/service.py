@@ -18,9 +18,7 @@ async def start_bot(config):
     global DISCORD_BOT
     global DISCORD_BOT_TASK
 
-    DISCORD_BOT = bot.Bot(command_prefix=config['command_prefix'])
-
-    bot.construct(DISCORD_BOT, config)
+    DISCORD_BOT = bot.construct(config)
 
     async def runner():
         await DISCORD_BOT.start(config['token'], bot=True, reconnect=True)

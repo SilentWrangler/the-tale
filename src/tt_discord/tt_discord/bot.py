@@ -13,7 +13,6 @@ REQUIRED_PERMISSIONS = {'manage_nicknames'}
 
 class Bot(discord_commands.Bot):
 
-    # @discord_commands.has_guild_permissions(manage_nicknames=True)
     async def on_ready(self):
         logging.info('logged as "%s"', self.user)
 
@@ -31,9 +30,38 @@ class Bot(discord_commands.Bot):
                                'guild_id': guild.id})
 
 
-def construct(bot, config):
+class HelpCommand(discord_commands.DefaultHelpCommand):
 
-    @bot.command()
+    def __init__(self,
+                 commands_heading='Команды:',
+                 no_category='Команды',
+                 command_attrs={'help': 'Отобразить этот текст.'},
+                 **kwargs):
+        super().__init__(commands_heading=commands_heading,
+                         no_category=no_category,
+                         command_attrs=command_attrs,
+                         **kwargs)
+
+    def get_ending_note(self):
+        return f'Введите "{self.clean_prefix}{self.invoked_with} <команда>", чтобы получить подробную информацию о команде.'
+
+
+DESCRIPTION = '''
+Это бот игры «Сказка»: https://the-tale.org
+
+Он синхронизирует статус игроков в Discord со статусом в игре.
+'''
+
+
+def construct(config):
+
+    bot = Bot(command_prefix=config['command_prefix'],
+              description=DESCRIPTION.strip(),
+              help_command=HelpCommand(),
+              command_not_found='Команда "{}" не найдена.')
+
+    @bot.command(help='Прикрепляет ваш аккаунт в игре к аккаунту в Discord. Вводите эту команду так, как её отобразила игра.',
+                 brief='Прикрепляет ваш аккаунт в игре к аккаунту в Discord.')
     async def bind(context, bind_code: uuid.UUID):
         logging.info('bind command received, code: "%s", discord id: "%s"', bind_code, context.author.id)
 
@@ -51,6 +79,8 @@ def construct(bot, config):
         account_info = await operations.get_account_info_by_discord_id(context.author.id)
 
         await synchronize(bot, account_info, config)
+
+    return bot
 
 
 async def synchronize(bot, account_info, config):

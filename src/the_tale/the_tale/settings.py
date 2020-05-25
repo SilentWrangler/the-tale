@@ -60,7 +60,7 @@ CARDS_TUTORIAL = None
 X_FRAME_OPTIONS = 'DENY'
 
 ALLOWED_HOSTS = ['localhost',
-				'sw-ttclone.heroku.com']
+				'sw-ttclone.herokuapp.com']
 
 AUTH_USER_MODEL = 'accounts.Account'
 

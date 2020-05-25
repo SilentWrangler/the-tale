@@ -1,2 +1,1 @@
-web gunicorn src.the_tale.the_tale.wsgi --log-file -
- 
+web  cd  src/the_tale  gunicorn the_tale.wsgi --log-file -

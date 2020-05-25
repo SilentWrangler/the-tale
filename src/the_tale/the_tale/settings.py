@@ -1,5 +1,6 @@
 
 import smart_imports
+import django_heroku
 
 smart_imports.all()
 
@@ -23,16 +24,11 @@ DEBUG = False
 SENTRY_RAVEN_CONFIG = None
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'the_tale',
-        'USER': 'the_tale',
-        'PASSWORD': 'the_tale',
-        'HOST': '',
-        'PORT': '',
-        'CONN_MAX_AGE': 60 * 60  # close connection after an hour
+    "default": {
+        "ENGINE" : "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3")
     }
-}
+
 
 TIME_ZONE = 'UTC'
 
@@ -64,10 +60,7 @@ CARDS_TUTORIAL = None
 X_FRAME_OPTIONS = 'DENY'
 
 ALLOWED_HOSTS = ['localhost',
-                 'the-tale.org',
-                 '.the-tale.org',
-                 'local.the-tale',
-                 '.local.the-tale']
+				'sw-ttclone.heroku.com']
 
 AUTH_USER_MODEL = 'accounts.Account'
 
@@ -84,9 +77,9 @@ API_CLIENT = 'the_tale-%s' % META_CONFIG.version
 USE_I18N = True
 USE_L10N = True
 
-SECRET_KEY = 'test secret key, must be replaced'
+SECRET_KEY = os.environ['SECRET_KEY']
 
-TT_SECRET = 'test.secret'
+TT_SECRET = os.environ['TT_SECRET_KEY']
 
 GA_CODE = None
 MAIL_RU = None

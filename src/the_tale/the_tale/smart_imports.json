@@ -80,7 +80,7 @@
                              "urlopen": {"module": "urllib.request", "attribute": "urlopen"},
 
                              "old_views": {"module": "the_tale.common.old_views"},
-                             "jinja2":{"module":"jinja2"}
+                             "jinja2":{"module":"jinja2"},
 
                              "global_settings": {"module": "the_tale.common.settings", "attribute": "settings"}}},
 

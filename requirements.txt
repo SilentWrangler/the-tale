@@ -7,3 +7,4 @@ rels
 utg
 git+https://github.com/the-tale/deworld.git
 git+https://github.com/the-tale/questgen.git
+sentry_sdk

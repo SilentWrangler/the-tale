@@ -1,1 +1,1 @@
-web  cd  src/the_tale ; gunicorn the_tale.wsgi --log-file -
+web  cd  src/the_tale ; django-admin runserver 0.0.0.0:8000  --settings=the_tale.setttings
